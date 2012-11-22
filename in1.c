@@ -1,8 +1,12 @@
-int false(){
-  return 0;
+float pow(base,exp)
+float base,exp;
+{
+  
 }
 
-int f(a,b,c,d)
+
+
+int** f(a,b,c,d)
 int* a,b;
 float c, d[100];
 {
@@ -10,21 +14,23 @@ float c, d[100];
 }
 
 
+int false(){
+  return 0;
+}
+
+
+
 true(){
   return 1;
 }
 
-double pow(base,exp)
-double base,exp;
-{
-  
-}
+
 
 int f(a)
 int a;
 {
     //  }}}}}}}}}}}}}
     char* str = "{{{{{{{{{{";
-    /* ... */ 
+    /* ...  */
 }
 
