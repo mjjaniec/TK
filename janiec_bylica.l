@@ -24,7 +24,7 @@ POINTER  [*]+
 %%
 
 <INITIAL>{TYPE}     {yylval.string=newyytext(yytext); return DECL_SPECIFIER; }
-<INITIAL>{EXTYPE}   {BEGIN(_EXTYPE); }
+<INITIAL>{EXTYPE}   {BEGIN(_EXTYPE); yymore(); }
 <INITIAL>{NUM}      {yylval.string=newyytext(yytext); return NUM; }
 <INITIAL>{ID}       {yylval.string=newyytext(yytext); return ID; }
 <INITIAL>({WS}|\n)+ {} //eat-up white spaces
