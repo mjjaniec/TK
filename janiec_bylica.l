@@ -2,9 +2,11 @@
 #include <string.h>
 #include <stdio.h>
 #include "janiec_bylica.tab.hpp"
-int curly_bracket_counter=0;
+
+//for easier string management. (I would rather like to use std::string in %union but it wont compile)
 const char* newyytext(const char*);
-//void yyerror(const char *s);
+int curly_bracket_counter=0;
+void yyerror(const char *s);
 %}
 
 %option yylineno
@@ -40,7 +42,7 @@ POINTER  [*]+
 <INITIAL>";"        {return SEMICOLON; }
 <INITIAL>{POINTER}  {yylval.string=newyytext(yytext); return POINTER; }
 
- /* Comments outside a function */
+ /* Comments outside a function (not necessery )*/
 <INITIAL>"//"       {BEGIN(_OUTER_LINE_COMMENT); }
 <INITIAL>"/\*"      {BEGIN(_OUTER_C_COMMENT); }
 <_OUTER_C_COMMENT>{ALL} {; }
@@ -49,7 +51,7 @@ POINTER  [*]+
 <_OUTER_LINE_COMMENT>\n {BEGIN(INITIAL);}
 
 
- /*Body handling */
+ /*Body handling just cunting curly brackets. Excpet those one that are in comment or string */
 <INITIAL>"}"      {/* error */}
 <INITIAL>"{"      {++curly_bracket_counter; yymore(); BEGIN(_BODY); }
 
@@ -71,7 +73,13 @@ POINTER  [*]+
 <_LINE_COMMENT>.  {yymore();  }
 <_LINE_COMMENT>\n {yymore(); BEGIN(_BODY); }
 
-{ALL}             {fprintf(stderr,"Lexing error\n");}
+ /*ERROR*/
+<*>{ALL}             {
+  char buffer[1024];
+  sprintf(buffer,"ERROR: Lexing error at line: %d nears token \'%s\'.\n",yylineno,yytext);
+  yyerror(buffer);  
+ }
+
 
 %%                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
